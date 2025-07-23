@@ -1,17 +1,36 @@
-import SearchBar from "./components/search-bar";
-import "./App.css";
+import "./index.css";
+import { useState } from "react";
+import PDFViewer from "./components/document";
 
 function App() {
-  return (
-    <div className="min-h-screen bg-black text-white">
-      <header className="text-4xl font-bold text-center py-6">
-        Semantic Document Search
-      </header>
+  const [pdfFile, setPdfFile] = useState(null);
 
-      <main className="flex justify-center px-4">
-        <div className="w-full max-w-4xl bg-white text-black p-6 rounded-xl shadow-lg">
-          <SearchBar />
-        </div>
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type === "application/pdf") {
+      setPdfFile(file);
+    }
+  };
+
+  return (
+    <div className="">
+      <header className="flex flex-row items-center w-full h-20 border-4 border-red-500 p-2">
+        <div className="font-bold text-3xl">Semantic Document Search</div>
+      </header>
+      <main className="flex flex-col items-center w-full h-auto border-4 border-green-500">
+        <div className="font-bold text-2xl">Please Attach a PDF</div>
+        {/* Put the PDF Viewer under this comment */}
+        <input
+          type="file"
+          accept="application/pdf"
+          onChange={handleFileUpload}
+          className="mb-4"
+        />
+        {pdfFile ? (
+          <PDFViewer file={pdfFile} />
+        ) : (
+          <p>Please upload a PDF file</p>
+        )}
       </main>
     </div>
   );
