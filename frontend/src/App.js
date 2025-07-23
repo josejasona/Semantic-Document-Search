@@ -1,26 +1,18 @@
-import logo from "./logo.svg";
-import "./App.css";
 import SearchBar from "./components/search-bar";
+import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-
-        <SearchBar />
+    <div className="min-h-screen bg-black text-white">
+      <header className="text-4xl font-bold text-center py-6">
+        Semantic Document Search
       </header>
+
+      <main className="flex justify-center px-4">
+        <div className="w-full max-w-4xl bg-white text-black p-6 rounded-xl shadow-lg">
+          <SearchBar />
+        </div>
+      </main>
     </div>
   );
 }

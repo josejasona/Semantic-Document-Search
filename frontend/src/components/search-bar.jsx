@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 
 function SearchBar() {
   const [query, setQuery] = useState("");
@@ -21,9 +21,12 @@ function SearchBar() {
         type="text"
         placeholder="..."
         value={query}
-        onChange={e => setQuery(e.target.value)}
+        onChange={(e) => setQuery(e.target.value)}
       />
-      <button className="mt-2 p-2 bg-blue-600 text-white" onClick={handleSearch}>
+      <button
+        className="mt-2 p-2 bg-blue-600 text-white"
+        onClick={handleSearch}
+      >
         Search
       </button>
 
