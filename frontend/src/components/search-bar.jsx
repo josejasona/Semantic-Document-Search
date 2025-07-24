@@ -2,8 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 
 function SearchBar({ onSearch }) {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-
+  
   const handleSearch = () => {
     if (query.trim() !== "") {
       onSearch(query);

@@ -39,6 +39,15 @@ function PDFViewer({ file, query }) {
     console.log("Search matches:", matches); // for debug
   }, [query, pdfTextPages]);
 
+  function highlightMatch(text, query) {
+    if (!query) return text;
+
+    const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // escape regex special chars
+    const pattern = new RegExp(escapedQuery, "gi");
+
+    return text.replace(pattern, (value) => `<mark>${value}</mark>`);
+  }
+
   return (
     <div className="flex flex-col items-center">
       <div className="overflow-y-scroll overflow-x-auto h-[600px] p-4 bg-white rounded">
@@ -53,6 +62,9 @@ function PDFViewer({ file, query }) {
               pageNumber={index + 1}
               renderTextLayer={true}
               renderAnnotationLayer={false}
+              customTextRenderer={({ str }) => {
+                return highlightMatch(str, query);
+              }}
             />
           ))}
         </Document>
