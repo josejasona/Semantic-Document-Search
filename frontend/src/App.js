@@ -1,6 +1,7 @@
 import "./index.css";
 import { useState } from "react";
 import PDFViewer from "./components/document";
+import SearchBar from "./components/search-bar";
 
 function App() {
   const [pdfFile, setPdfFile] = useState(null);
@@ -28,9 +29,12 @@ function App() {
           onChange={handleFileUpload}
           className="mb-4"
         />
-        <div className="bg-gray-600 border-8">
+        <div className="border-2 border-red-500">
           {pdfFile ? (
-            <PDFViewer file={pdfFile} />
+            <>
+              <SearchBar />
+              <PDFViewer file={pdfFile} />
+            </>
           ) : (
             <p>Please upload a PDF file</p>
           )}
