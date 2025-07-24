@@ -1,6 +1,7 @@
 // src/components/document.jsx
 import { Document, Page, pdfjs } from "react-pdf";
 import { useState } from "react";
+import 'react-pdf/dist/Page/TextLayer.css';
 
 // Correct way to load worker from public folder
 pdfjs.GlobalWorkerOptions.workerSrc = `${process.env.PUBLIC_URL}/pdf.worker.js`;
