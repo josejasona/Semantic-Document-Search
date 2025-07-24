@@ -7,6 +7,8 @@ function App() {
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
+    console.log("File selected:", file); // 🔍 Check this
+
     if (file && file.type === "application/pdf") {
       setPdfFile(file);
     }
@@ -26,11 +28,13 @@ function App() {
           onChange={handleFileUpload}
           className="mb-4"
         />
-        {pdfFile ? (
-          <PDFViewer file={pdfFile} />
-        ) : (
-          <p>Please upload a PDF file</p>
-        )}
+        <div className="bg-gray-600 border-8">
+          {pdfFile ? (
+            <PDFViewer file={pdfFile} />
+          ) : (
+            <p>Please upload a PDF file</p>
+          )}
+        </div>
       </main>
     </div>
   );

@@ -2,8 +2,8 @@
 import { Document, Page, pdfjs } from "react-pdf";
 import { useState } from "react";
 
-// Set the PDF worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+// Correct way to load worker from public folder
+pdfjs.GlobalWorkerOptions.workerSrc = `${process.env.PUBLIC_URL}/pdf.worker.js`;
 
 function PDFViewer({ file }) {
   const [numPages, setNumPages] = useState(null);
@@ -14,20 +14,22 @@ function PDFViewer({ file }) {
 
   return (
     <div className="flex flex-col items-center">
-      <Document
-        file={file}
-        onLoadSuccess={onLoadSuccess}
-        className="border border-gray-300"
-      >
-        {Array.from(new Array(numPages), (el, index) => (
-          <Page
-            key={`page_${index + 1}`}
-            pageNumber={index + 1}
-            renderTextLayer={true}
-            renderAnnotationLayer={false}
-          />
-        ))}
-      </Document>
+      <div className="overflow-y-scroll overflow-x-auto h-[600px] p-4 bg-white rounded">
+        <Document
+          file={file}
+          onLoadSuccess={onLoadSuccess}
+          className="border border-gray-300"
+        >
+          {Array.from(new Array(numPages), (el, index) => (
+            <Page
+              key={`page_${index + 1}`}
+              pageNumber={index + 1}
+              renderTextLayer={true}
+              renderAnnotationLayer={false}
+            />
+          ))}
+        </Document>
+      </div>
     </div>
   );
 }
