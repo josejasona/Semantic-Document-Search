@@ -5,6 +5,8 @@ import SearchBar from "./components/search-bar";
 
 function App() {
   const [pdfFile, setPdfFile] = useState(null);
+  const [query, setQuery] = useState("");
+
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -32,8 +34,8 @@ function App() {
         <div className="border-2 border-red-500">
           {pdfFile ? (
             <>
-              <SearchBar />
-              <PDFViewer file={pdfFile} />
+              <SearchBar onSearch={setQuery} />
+              <PDFViewer file={pdfFile} query={query} />
             </>
           ) : (
             <p>Please upload a PDF file</p>
