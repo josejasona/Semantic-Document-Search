@@ -6,7 +6,7 @@ import "react-pdf/dist/Page/TextLayer.css";
 // Correct way to load worker from public folder
 pdfjs.GlobalWorkerOptions.workerSrc = `${process.env.PUBLIC_URL}/pdf.worker.js`;
 
-function PDFViewer({ file, query }) {
+function PDFViewer({ file, query, currentPage }) {
   const [numPages, setNumPages] = useState(null);
   const [pdfTextPages, setPdfTextPages] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
@@ -64,6 +64,11 @@ function PDFViewer({ file, query }) {
               renderAnnotationLayer={false}
               customTextRenderer={({ str }) => {
                 return highlightMatch(str, query);
+              }}
+              inputRef={(ref) => {
+                if (ref && currentPage === index + 1) {
+                  ref.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
               }}
             />
           ))}

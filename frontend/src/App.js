@@ -6,7 +6,7 @@ import SearchBar from "./components/search-bar";
 function App() {
   const [pdfFile, setPdfFile] = useState(null);
   const [query, setQuery] = useState("");
-
+  const [currentPage, setCurrentPage] = useState(null);
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -34,8 +34,21 @@ function App() {
         <div className="border-2 border-red-500">
           {pdfFile ? (
             <>
+              <input
+                type="number"
+                min="1"
+                placeholder="Go to page..."
+                onChange={(e) => {
+                  const page = parseInt(e.target.value);
+                  if (!isNaN(page)) setCurrentPage(page);
+                }}
+              />
               <SearchBar onSearch={setQuery} />
-              <PDFViewer file={pdfFile} query={query} />
+              <PDFViewer
+                file={pdfFile}
+                query={query}
+                currentPage={currentPage}
+              />
             </>
           ) : (
             <p>Please upload a PDF file</p>
