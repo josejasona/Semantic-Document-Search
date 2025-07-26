@@ -35,7 +35,7 @@ function SearchBar({ onSearch }) {
       <button
         className="bg-blue-500 text-white ml-auto text-right rounded px-2 py-2"
         type="Submit"
-        onClick={sendQuery}
+        onClick={() => sendQuery(query)}
       >
         Search
       </button>
