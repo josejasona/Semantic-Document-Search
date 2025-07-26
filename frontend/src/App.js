@@ -2,18 +2,28 @@ import "./index.css";
 import { useState } from "react";
 import PDFViewer from "./components/document";
 import SearchBar from "./components/search-bar";
+import { uploadPDFToBackend } from "./utils/uploadPdf";
 
 function App() {
   const [pdfFile, setPdfFile] = useState(null);
   const [query, setQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(null);
 
-  const handleFileUpload = (e) => {
+  const handleFileUpload = async (e) => {
     const file = e.target.files[0];
-    console.log("File selected:", file); // 🔍 Check this
+    console.log("File selected:", file);
+
+    // 🔍 Check this
 
     if (file && file.type === "application/pdf") {
       setPdfFile(file);
+
+      // Upload to backend
+      try {
+        await uploadPDFToBackend(file);
+      } catch (err) {
+        alert("Failed to upload PDF");
+      }
     }
   };
 

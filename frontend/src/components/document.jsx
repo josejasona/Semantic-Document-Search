@@ -23,6 +23,10 @@ function PDFViewer({ file, query, currentPage }) {
     }
 
     setPdfTextPages(pages);
+
+
+
+    
   };
 
   useEffect(() => {
