@@ -3,6 +3,11 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from PyPDF2 import PdfReader
 from fastapi.responses import JSONResponse
+from search_engine import semantic_search, embed
+import io
+
+paragraph_embeddings = []
+paragraphs = []
 
 
 # Initialize FastAPI app BEFORE any usage
@@ -23,29 +28,36 @@ class QueryRequest(BaseModel):
 # Your endpoint goes AFTER app is created
 @app.post("/search")
 def search(request: QueryRequest):
+    print("📥 Hit /search")  # Add this
+
+    query = request.query  # ✅ Extract string
+
+
     # your search logic here
-    return {"results": ["example"]}
+    results = semantic_search(query, paragraphs, paragraph_embeddings)
+
+    for result in results:
+        print(f"Score: {result['score']:.4f}")
+        print(f"Paragraph: {result['paragraph']}\n")
+        print("==================================================")
+
+    return results
 
 @app.post("/upload-pdf")
 async def upload_pdf(file: UploadFile = File(...)):
-    print("📥 /upload-pdf endpoint hit")
-    print(f"➡️ Received file: {file.filename}")
-    print(f"➡️ Content type: {file.content_type}")
-    
+    print("📥 Hit /upload-pdf")  # Add this
+    global paragraphs, paragraph_embeddings
+
     contents = await file.read()
-    print(f"📦 File size: {len(contents)} bytes")
-    print(f"🧪 First 10 bytes: {contents[:10]}")
+    reader = PdfReader(io.BytesIO(contents))
+    text = ""
 
-    # Optional: Try parsing it to catch bad files
-    try:
-        reader = PdfReader(file.file)  # use file.file, not contents
-        print(f"📄 PDF has {len(reader.pages)} pages")
-    except Exception as e:
-        print(f"❌ Error reading PDF: {e}")
+    for page in reader.pages:
+        text += page.extract_text() + "\n"
 
-    return JSONResponse(content={
-        "filename": file.filename,
-        "size": len(contents),
-        "message": "Upload successful"
-    })
+    # Clean and split into paragraphs
+    paragraphs = [p.strip() for p in text.split("\n\n") if p.strip()]
+    paragraph_embeddings = embed(paragraphs)
+
+    return {"message": "PDF uploaded and processed", "paragraphs": len(paragraphs)}
 
