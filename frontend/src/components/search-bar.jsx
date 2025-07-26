@@ -2,11 +2,25 @@ import React, { useState, useCallback, useEffect } from "react";
 
 function SearchBar({ onSearch }) {
   const [query, setQuery] = useState("");
-  
+
   const handleSearch = () => {
     if (query.trim() !== "") {
       onSearch(query);
     }
+  };
+
+  const sendQuery = async (query) => {
+    const res = await fetch("http://localhost:8000/search", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query }),
+    });
+
+    const data = await res.json();
+    console.log("Search results:", data.results);
+    // Now display these in your React component
   };
 
   return (
@@ -21,7 +35,7 @@ function SearchBar({ onSearch }) {
       <button
         className="bg-blue-500 text-white ml-auto text-right rounded px-2 py-2"
         type="Submit"
-        onClick={handleSearch}
+        onClick={() => sendQuery(query)}
       >
         Search
       </button>
