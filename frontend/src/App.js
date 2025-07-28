@@ -8,6 +8,7 @@ function App() {
   const [pdfFile, setPdfFile] = useState(null);
   const [query, setQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(null);
+  const [results, setResults] = useState([]);
 
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
@@ -53,12 +54,28 @@ function App() {
                   if (!isNaN(page)) setCurrentPage(page);
                 }}
               />
-              <SearchBar onSearch={setQuery} />
+              <SearchBar onSearch={setQuery} onResults={setResults} />
               <PDFViewer
                 file={pdfFile}
                 query={query}
                 currentPage={currentPage}
               />
+              <div className="w-full max-w-3xl mt-4 p-4 bg-gray-100 rounded shadow">
+                <h2 className="text-xl font-semibold mb-2">Top Matches:</h2>
+                {results.length > 0 ? (
+                  results.map((res, idx) => (
+                    <div key={idx} className="mb-4">
+                      <p className="text-sm text-gray-600">
+                        Score: {res.score.toFixed(4)}
+                      </p>
+                      <p className="text-md">{res.paragraph}</p>
+                      <hr className="my-2" />
+                    </div>
+                  ))
+                ) : (
+                  <p>No results yet. Try a search.</p>
+                )}
+              </div>
             </>
           ) : (
             <p>Please upload a PDF file</p>

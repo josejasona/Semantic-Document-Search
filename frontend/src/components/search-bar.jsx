@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 
-function SearchBar({ onSearch }) {
+function SearchBar({ onSearch, onResults }) {
   const [query, setQuery] = useState("");
 
   const handleSearch = () => {
@@ -21,6 +21,9 @@ function SearchBar({ onSearch }) {
     const data = await res.json();
     console.log("Search results:", data.results);
     // Now display these in your React component
+     if (onResults) {
+        onResults(data);  // Send results to parent
+      }
   };
 
   return (
